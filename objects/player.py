@@ -7,7 +7,7 @@ class Player:
         self.name = None
         self.client = Client(self.name)
 
-#        self.client.connect_to_server()
+        self.client.connect_to_server()
 
         self.current_room_id = None
 
@@ -20,6 +20,9 @@ class Player:
 
     def leave_room(self):
         return self.client.leave_room()
+
+    def get_room_info(self):
+        return self.client.get_room_info()
 
     def get_room_member_names(self):
         return self.client.get_room_member()

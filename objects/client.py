@@ -1,6 +1,8 @@
 import socketio
 import sys
 
+from kivymd.uix.list import TwoLineAvatarIconListItem as ListItem, IconLeftWidget
+
 from objects.responses import ServerResponse as Response
 
 SERVER_ADDRESS = 'http://localhost:5000'
@@ -9,9 +11,13 @@ SERVER_ADDRESS = 'http://localhost:5000'
 class Client:
 
     def __init__(self, name):
+        self.main_window = None
         self.name = name
         self.sio = socketio.Client()
         self.connected = False
+
+    def set_main_window(self, main_window):
+        self.main_window = main_window
 
     def connect_to_server(self):
         """Connect to the server"""
@@ -37,8 +43,16 @@ class Client:
 
         # ROOM EVENTS
         @self.sio.event
-        def new_member(name):
-            print(f'[ROOM] member joined: {name}')
+        def member_join(name):
+            print(f'[ROOM] {name} joined')
+
+            self.main_window.update_member_list()
+
+        @self.sio.event
+        def member_leave(name):
+            print(f'[ROOM] {name} left')
+
+            self.main_window.update_member_list()
 
     def register(self, name):
         return self.sio.call('register', data=name) == Response.SUCCESS.value
