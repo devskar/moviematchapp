@@ -7,7 +7,7 @@ class Player:
         self.name = None
         self.client = Client(self.name)
 
-        self.client.connect_to_server()
+#        self.client.connect_to_server()
 
         self.current_room_id = None
 
