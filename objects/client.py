@@ -1,5 +1,8 @@
 import socketio
 import sys
+
+from objects.responses import ServerResponse as Response
+
 SERVER_ADDRESS = 'http://localhost:5000'
 
 
@@ -38,22 +41,20 @@ class Client:
             print(f'[ROOM] member joined: {name}')
 
     def register(self, name):
-        self.sio.emit('register', data=name)
-        print(f'[SERVER] registered as {name}')
+        return self.sio.call('register', data=name) == Response.SUCCESS.value
 
     # ROOM METHODS
-    def create_room(self):
-        self.sio.emit('create_room')
-        print('[ROOM] created room')
+    def create_room(self, name):
+        return self.sio.call('create_room', data=name) == Response.SUCCESS.value
 
     def join_room(self, room_id):
-        self.sio.emit('join_room', data=room_id)
-        print(f'[ROOM] joined room {room_id}')
+        return self.sio.call('join_room', data=room_id) == Response.SUCCESS.value
 
     def leave_room(self):
-        self.sio.emit('leave_room')
-        print(f'[ROOM] left room')
+        return self.sio.call('leave_room') == Response.SUCCESS.value
+
+    def get_room_info(self):
+        return self.sio.call('get_room_info')
 
     def get_room_member(self):
-        names = self.sio.call('get_room_member')
-        return names
+        return self.sio.call('get_room_member')
