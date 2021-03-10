@@ -70,5 +70,9 @@ class Client:
     def get_room_info(self):
         return self.sio.call('get_room_info')
 
+    def get_room_movie(self):
+        return self.sio.call('get_room_movie')
+
     def get_room_member(self):
         return self.sio.call('get_room_member')
+
