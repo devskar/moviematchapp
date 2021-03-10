@@ -5,7 +5,7 @@ from kivymd.uix.list import TwoLineAvatarIconListItem as ListItem, IconLeftWidge
 
 from objects.responses import ServerResponse as Response
 
-SERVER_ADDRESS = 'http://localhost:5000'
+SERVER_ADDRESS = 'http://localhost:5001'
 
 
 class Client:
@@ -54,6 +54,14 @@ class Client:
 
             self.main_window.update_member_list()
 
+        @self.sio.event
+        def update_movie():
+            self.main_window.update_movie()
+
+        @self.sio.event
+        def movie_rated(info):
+            self.main_window.movie_rated(info['name'], info['positive'], info['participants'])
+
     def register(self, name):
         return self.sio.call('register', data=name) == Response.SUCCESS.value
 
@@ -76,8 +84,8 @@ class Client:
     def get_room_member(self):
         return self.sio.call('get_room_member')
 
-    def match_movie(self):
-        self.sio.emit('match_movie')
+    def positive_vote_movie(self):
+        self.sio.emit('vote_movie', data=0)
 
-    def nomatch_movie(self):
-        self.sio.emit('nomatch_movie')
+    def negative_vote_movie(self):
+        self.sio.emit('vote_movie', data=1)

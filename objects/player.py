@@ -30,8 +30,8 @@ class Player:
     def get_current_movie(self):
         return self.client.get_room_movie()
 
-    def match_current_movie(self):
-        self.client.match_movie()
+    def positive_vote_movie(self):
+        self.client.positive_vote_movie()
 
-    def nomatch_current_movie(self):
-        self.client.nomatch_movie()
+    def negative_vote_movie(self):
+        self.client.negative_vote_movie()
