@@ -24,8 +24,14 @@ class Player:
     def get_room_info(self):
         return self.client.get_room_info()
 
+    def get_room_member_names(self):
+        return self.client.get_room_member()
+
     def get_current_movie(self):
         return self.client.get_room_movie()
 
-    def get_room_member_names(self):
-        return self.client.get_room_member()
+    def match_current_movie(self):
+        self.client.match_movie()
+
+    def nomatch_current_movie(self):
+        self.client.nomatch_movie()

@@ -60,6 +60,15 @@ class DragImage(DragBehavior, AsyncImage):
         super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
+
+        if self.x < -125:
+            player.nomatch_current_movie()
+
+        if self.x > 125:
+            player.match_current_movie()
+
+        self.x = 0
+
         super().on_touch_up(touch)
 
 

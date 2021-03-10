@@ -76,3 +76,8 @@ class Client:
     def get_room_member(self):
         return self.sio.call('get_room_member')
 
+    def match_movie(self):
+        self.sio.emit('match_movie')
+
+    def nomatch_movie(self):
+        self.sio.emit('nomatch_movie')
