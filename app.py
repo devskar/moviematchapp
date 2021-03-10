@@ -61,15 +61,16 @@ class DragImage(DragBehavior, AsyncImage):
 
     def on_touch_up(self, touch):
 
-        if self.x < -125:
-            player.nomatch_current_movie()
-
-        if self.x > 125:
-            player.match_current_movie()
+        curr_x = self.x
 
         self.x = 0
-
         super().on_touch_up(touch)
+
+        if curr_x < -125:
+            player.negative_vote_movie()
+
+        if curr_x > 125:
+            player.positive_vote_movie()
 
 
 class MainWindow(MDScreen):
@@ -88,9 +89,18 @@ class MainWindow(MDScreen):
         self.update_member_list()
         self.update_movie()
 
+    def movie_rated(self, name, positive, participants):
+
+        list = self.ids.movie_list
+
+        item = TwoLineListItem(text=name, secondary_text=f'rating: {positive}/{participants}')
+        list.add_widget(item)
+
     def update_movie(self):
         movie = player.get_current_movie()
         poster_url = movie['poster_url']
+
+        print('[ROOM] New movie', movie['title'])
 
         swipe_img = self.ids.swipe_img
 
