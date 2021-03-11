@@ -9,7 +9,6 @@ from kivymd.uix.bottomnavigation import MDBottomNavigationItem
 from kivymd.uix.list import TwoLineListItem
 
 from kivymd.uix.screen import MDScreen
-from kivymd.utils.fitimage import FitImage
 
 from objects.player import Player
 
@@ -94,7 +93,7 @@ class MainWindow(MDScreen):
         list = self.ids.movie_list
 
         item = TwoLineListItem(text=name, secondary_text=f'rating: {positive}/{participants}')
-        list.add_widget(item)
+        list.add_widget(item, index=len(list.children))
 
     def update_movie(self):
         movie = player.get_current_movie()
