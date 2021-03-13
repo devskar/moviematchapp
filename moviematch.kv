@@ -1,0 +1,273 @@
+WindowManager:
+
+    RegisterWindow:
+    CreateOrJoinWindow:
+    CreateWindow:
+    JoinWindow:
+    MainWindow:
+
+
+<BackButton@MDIconButton>
+
+    pos_hint: {'center_x': .1, 'center_y': .94}
+
+    icon: 'arrow-collapse-left'
+    theme_text_color: "Custom"
+    text_color: app.theme_cls.primary_color
+    user_font_size: "30sp"
+
+<RegisterWindow>
+    name: 'register'
+
+    MDTextField:
+        id: name_input
+
+        hint_text: 'Name'
+
+        mode: 'rectangle'
+
+        size_hint_x: 0.75
+        pos_hint: {'center_x': .5, 'center_y': .5}
+
+        on_text_validate:
+            root.register(self.text)
+
+    MDIconButton:
+        pos_hint: {'center_x': .85, 'center_y': .4}
+
+        icon: 'arrow-right'
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.primary_color
+        user_font_size: "30sp"
+
+        on_press:
+            root.register(name_input.text)
+
+
+    MDGridLayout:
+        pos_hint: {'center_x': .175, 'center_y': .05}
+
+        cols: 2
+        rows: 1
+
+        MDIcon:
+            icon: 'github-circle'
+            halign: 'right'
+        MDLabel:
+            text: 'github.com/\ndevskar'
+            halign: 'left'
+
+
+<CreateOrJoinWindow>
+    name: 'createorjoin'
+
+    MDBoxLayout:
+        adaptive_size: True
+
+        orientation: 'vertical'
+        spacing: 25
+
+        pos_hint: {'center_x': .5, 'center_y': .5}
+
+        MDRectangleFlatButton:
+            text: 'create'
+            on_press:
+                root.create()
+
+        MDLabel:
+            text: '- or -'
+            halign: 'center'
+
+        MDRectangleFlatButton:
+            text: 'join'
+
+            on_press:
+                root.join()
+
+    MDGridLayout:
+        pos_hint: {'center_x': .175, 'center_y': .05}
+
+        cols: 2
+        rows: 1
+
+        MDIcon:
+            icon: 'github-circle'
+            halign: 'right'
+        MDLabel:
+            text: 'github.com/\ndevskar'
+            halign: 'left'
+
+<CreateWindow>
+    name: 'create'
+
+    BackButton:
+        on_press:
+            root.manager.transition.direction = 'right'
+            app.root.current = "createorjoin"
+
+    MDTextField:
+        id: room_input
+
+        hint_text: 'Room Name'
+
+        mode: 'rectangle'
+
+        size_hint_x: 0.75
+        pos_hint: {'center_x': .5, 'center_y': .5}
+
+        on_text_validate:
+            root.create(room_input.text)
+
+    MDIconButton:
+        pos_hint: {'center_x': .85, 'center_y': .4}
+
+        icon: 'arrow-right'
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.primary_color
+        user_font_size: "30sp"
+
+        on_press:
+            root.create(room_input.text)
+
+    MDGridLayout:
+        pos_hint: {'center_x': .175, 'center_y': .05}
+
+        cols: 2
+        rows: 1
+
+        MDIcon:
+            icon: 'github-circle'
+            halign: 'right'
+        MDLabel:
+            text: 'github.com/\ndevskar'
+            halign: 'left'
+
+<JoinWindow>
+    name: 'join'
+
+    BackButton:
+        on_press:
+            root.manager.transition.direction = 'right'
+            app.root.current = "createorjoin"
+
+    MDTextField:
+        id: room_input
+
+        input_filter: 'int'
+
+        hint_text: 'Room ID'
+
+        mode: 'rectangle'
+
+        size_hint_x: 0.75
+        pos_hint: {'center_x': .5, 'center_y': .5}
+
+        on_text_validate:
+            root.join(int(room_input.text))
+
+    MDIconButton:
+        pos_hint: {'center_x': .85, 'center_y': .4}
+
+        icon: 'arrow-right'
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.primary_color
+        user_font_size: "30sp"
+
+        on_press:
+            root.join(int(room_input.text))
+
+    MDGridLayout:
+        pos_hint: {'center_x': .175, 'center_y': .05}
+
+        cols: 2
+        rows: 1
+
+        MDIcon:
+            icon: 'github-circle'
+            halign: 'right'
+        MDLabel:
+            text: 'github.com/\ndevskar'
+            halign: 'left'
+
+<MainWindow>
+    name: 'main'
+    id: main
+    MDBottomNavigation:
+        id: nav
+
+        MDBottomNavigationItem:
+            name: 'room'
+            text: 'Room'
+            icon: 'account-group'
+
+            MDBoxLayout:
+
+                orientation: 'vertical'
+                MDLabel:
+                    id: room_name
+                    halign: 'center'
+                    font_style: 'H3'
+                    size_hint_y: None
+                    height: self.texture_size[1] + 80
+
+                MDBoxLayout:
+                    adaptive_size: True
+
+                    orientation: 'vertical'
+                    spacing: 25
+
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+
+                    MDLabel:
+                        id: room_id
+                        halign: 'center'
+
+                    MDRectangleFlatButton:
+                        text: 'leave'
+
+                        on_press:
+                            root.leave()
+
+
+                ScrollView:
+                    MDList:
+                        id: member_list
+
+
+
+        MDBottomNavigationItem:
+            name: 'swipe'
+            text: 'swipe'
+            icon: 'alien-outline'
+
+            DragImage:
+                id: swipe_img
+                size: self.texture_size
+                drag_rectangle: self.x, self.y, self.width, self.height
+                drag_distance: 0
+                drag_timeout: 10000000
+
+        MDBottomNavigationItem:
+            name: 'movies'
+            text: 'Movies'
+            icon: 'movie-filter-outline'
+
+            MDBoxLayout:
+
+                orientation: 'vertical'
+                MDLabel:
+                    text: 'movies'
+                    halign: 'center'
+                    font_style: 'H3'
+                    size_hint_y: None
+                    height: self.texture_size[1] + 80
+                MDLabel:
+                    halign: 'center'
+                    font_style: 'Subtitle2'
+
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                ScrollView:
+                    MDList:
+                        id: movie_list
+
