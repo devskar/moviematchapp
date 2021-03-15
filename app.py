@@ -6,13 +6,40 @@ from kivy.uix.image import AsyncImage
 
 from kivymd.app import MDApp
 from kivymd.uix.bottomnavigation import MDBottomNavigationItem
+from kivymd.uix.chip import MDChip
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import TwoLineListItem
 
 from kivymd.uix.screen import MDScreen
+from kivymd.uix.tab import MDTabsBase
 
 from objects.player import Player
+from objects.static import Genre, Language
 
 player = Player()
+
+
+class Tab(MDFloatLayout, MDTabsBase):
+    pass
+
+
+class DragImage(DragBehavior, AsyncImage):
+    def on_touch_move(self, touch):
+        touch.dy = 0
+        super().on_touch_move(touch)
+
+    def on_touch_up(self, touch):
+
+        curr_x = self.x
+
+        self.x = 0
+        super().on_touch_up(touch)
+
+        if curr_x < -125:
+            player.negative_vote_movie()
+
+        if curr_x > 125:
+            player.positive_vote_movie()
 
 
 class RegisterWindow(MDScreen):
@@ -53,25 +80,6 @@ class JoinWindow(MDScreen):
             app.root.current = 'main'
 
 
-class DragImage(DragBehavior, AsyncImage):
-    def on_touch_move(self, touch):
-        touch.dy = 0
-        super().on_touch_move(touch)
-
-    def on_touch_up(self, touch):
-
-        curr_x = self.x
-
-        self.x = 0
-        super().on_touch_up(touch)
-
-        if curr_x < -125:
-            player.negative_vote_movie()
-
-        if curr_x > 125:
-            player.positive_vote_movie()
-
-
 class MainWindow(MDScreen):
     def on_pre_enter(self):
 
@@ -87,6 +95,24 @@ class MainWindow(MDScreen):
         self.update_room_info()
         self.update_member_list()
         self.update_movie()
+        self.update_genres()
+        self.update_languages()
+
+    def update_genres(self):
+
+        list = self.ids.genre_list
+
+        for genre in Genre:
+            chip = MDChip(text=genre.name, icon='', check=True)
+            list.add_widget(chip)
+
+    def update_languages(self):
+
+        list = self.ids.language_list
+
+        for language in Language:
+            chip = MDChip(text=language.name, icon='', check=True)
+            list.add_widget(chip)
 
     def movie_rated(self, name, positive, participants):
 
@@ -142,8 +168,9 @@ class MainApp(MDApp):
         pass
 
     def on_stop(self):
-        player.client.leave_room()
-        player.client.disconnect_from_server()
+        if player.client.connected:
+            player.client.leave_room()
+            player.client.disconnect_from_server()
 
 
 Window.size = (360, 600)
