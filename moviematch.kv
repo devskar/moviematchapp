@@ -16,6 +16,19 @@ WindowManager:
     text_color: app.theme_cls.primary_color
     user_font_size: "30sp"
 
+<Credits@MDGridLayout>:
+    pos_hint: {'center_x': .175, 'center_y': .05}
+
+    cols: 2
+    rows: 1
+
+    MDIcon:
+        icon: 'github'
+        halign: 'right'
+    MDLabel:
+        text: 'github.com/\ndevskar'
+        halign: 'left'
+
 <RegisterWindow>
     name: 'register'
 
@@ -44,18 +57,7 @@ WindowManager:
             root.register(name_input.text)
 
 
-    MDGridLayout:
-        pos_hint: {'center_x': .175, 'center_y': .05}
-
-        cols: 2
-        rows: 1
-
-        MDIcon:
-            icon: 'github-circle'
-            halign: 'right'
-        MDLabel:
-            text: 'github.com/\ndevskar'
-            halign: 'left'
+    Credits
 
 
 <CreateOrJoinWindow>
@@ -84,18 +86,7 @@ WindowManager:
             on_press:
                 root.join()
 
-    MDGridLayout:
-        pos_hint: {'center_x': .175, 'center_y': .05}
-
-        cols: 2
-        rows: 1
-
-        MDIcon:
-            icon: 'github-circle'
-            halign: 'right'
-        MDLabel:
-            text: 'github.com/\ndevskar'
-            halign: 'left'
+    Credits
 
 <CreateWindow>
     name: 'create'
@@ -129,18 +120,7 @@ WindowManager:
         on_press:
             root.create(room_input.text)
 
-    MDGridLayout:
-        pos_hint: {'center_x': .175, 'center_y': .05}
-
-        cols: 2
-        rows: 1
-
-        MDIcon:
-            icon: 'github-circle'
-            halign: 'right'
-        MDLabel:
-            text: 'github.com/\ndevskar'
-            halign: 'left'
+    Credits
 
 <JoinWindow>
     name: 'join'
@@ -176,18 +156,7 @@ WindowManager:
         on_press:
             root.join(int(room_input.text))
 
-    MDGridLayout:
-        pos_hint: {'center_x': .175, 'center_y': .05}
-
-        cols: 2
-        rows: 1
-
-        MDIcon:
-            icon: 'github-circle'
-            halign: 'right'
-        MDLabel:
-            text: 'github.com/\ndevskar'
-            halign: 'left'
+    Credits
 
 <MainWindow>
     name: 'main'
@@ -200,38 +169,96 @@ WindowManager:
             text: 'Room'
             icon: 'account-group'
 
-            MDBoxLayout:
+            MDTabs:
+                anim_duration: 0
+                allow_stretch: False
+                fixed_tab_label_width: root.width/3
+                Tab:
+                    title: 'member'
 
-                orientation: 'vertical'
-                MDLabel:
-                    id: room_name
-                    halign: 'center'
-                    font_style: 'H3'
-                    size_hint_y: None
-                    height: self.texture_size[1] + 80
+                    MDBoxLayout:
 
-                MDBoxLayout:
-                    adaptive_size: True
+                        orientation: 'vertical'
+                        MDLabel:
+                            id: room_name
+                            halign: 'center'
+                            font_style: 'H3'
+                            size_hint_y: None
+                            height: self.texture_size[1] + 80
 
-                    orientation: 'vertical'
-                    spacing: 25
+                        MDBoxLayout:
+                            adaptive_size: True
 
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                            orientation: 'vertical'
+                            spacing: 25
 
-                    MDLabel:
-                        id: room_id
-                        halign: 'center'
+                            pos_hint: {'center_x': .5, 'center_y': .5}
 
-                    MDRectangleFlatButton:
-                        text: 'leave'
+                            MDLabel:
+                                id: room_id
+                                halign: 'center'
 
-                        on_press:
-                            root.leave()
+                            MDRectangleFlatButton:
+                                text: 'leave'
+
+                                on_press:
+                                    root.leave()
 
 
-                ScrollView:
-                    MDList:
-                        id: member_list
+                        ScrollView:
+                            MDList:
+                                id: member_list
+
+                Tab:
+                    title: 'soon'
+                Tab:
+                    title: 'settings'
+
+                    ScrollView:
+
+                        GridLayout:
+                            padding: dp(10)
+                            spacing: dp(10)
+                            cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
+
+                            Widget:
+                                size_hint_y: None
+                                height: dp(5)
+
+                            MDLabel:
+                                text: 'Genres:'
+
+                            MDSeparator:
+
+                            StackLayout:
+                                size_hint_y: None
+                                height: self.minimum_height
+                                spacing: dp(5)
+
+                                id: genre_list
+
+
+                            Widget:
+                                size_hint_y: None
+                                height: dp(5)
+
+                            MDLabel:
+                                text: 'Languages:'
+
+                            MDSeparator:
+
+                            StackLayout:
+                                size_hint_y: None
+                                height: self.minimum_height
+                                spacing: dp(5)
+
+                                id: language_list
+
+                            Widget:
+                                size_hint_y: None
+                                height: dp(5)
 
 
 
